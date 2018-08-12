@@ -23,4 +23,19 @@
 /dist/
 /nbdist/
 /.nb-gradle/
+/Users/*
+
+### Eclipse ###
+
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders
 /Users/
