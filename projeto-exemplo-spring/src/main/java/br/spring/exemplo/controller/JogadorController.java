@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import br.spring.exemplo.model.Jogador;
@@ -25,11 +26,13 @@ public class JogadorController {
 	private JogadorRepository jogadorRepository;
 
 	@GetMapping
+	@ResponseStatus(code = HttpStatus.OK)
 	public List<Jogador> listarTodos(){
 		return jogadorRepository.findAll();
 	}
 
 	@GetMapping("/{id}")
+	@ResponseStatus(reason = "Id listados")
 	public ResponseEntity<Jogador> listarPorId(@PathVariable Long id){
 		Jogador jogador = jogadorRepository.findById(id)
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Id não encontrado"));
@@ -37,12 +40,14 @@ public class JogadorController {
 	}
 	
 	@PostMapping
+	@ResponseStatus(code = HttpStatus.CREATED)
 	public ResponseEntity<Jogador> adicionarJogador(@RequestBody Jogador jogador){
 		Jogador jogadorObjeto = jogadorRepository.save(jogador);
 		return new ResponseEntity<Jogador>(jogadorObjeto, HttpStatus.CREATED);
 	}
 
 	@PutMapping("/{id}")
+	@ResponseStatus(code = HttpStatus.OK)
 	public ResponseEntity<Jogador> atualizarJogador(@PathVariable Long id, @RequestBody Jogador jogador){
 		Jogador jogadorExistente = jogadorRepository.findById(id)
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Id não encontrado"));
@@ -51,6 +56,7 @@ public class JogadorController {
 	}
 
 	@DeleteMapping("/{id}")
+	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public ResponseEntity<Jogador> deletarJogador(@PathVariable Long id){
 		Jogador jogadorExistente = jogadorRepository.findById(id)
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id não encontrado"));
