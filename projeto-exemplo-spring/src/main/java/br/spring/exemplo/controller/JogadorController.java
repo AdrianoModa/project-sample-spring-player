@@ -27,8 +27,9 @@ public class JogadorController {
 
 	@GetMapping
 	@ResponseStatus(code = HttpStatus.OK)
-	public List<Jogador> listarTodos(){
-		return jogadorRepository.findAll();
+	public ResponseEntity<List<Jogador>> listarTodos(){
+		jogadorRepository.findAll();
+		return new ResponseEntity<List<Jogador>>(jogadorRepository.findAll(), HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
