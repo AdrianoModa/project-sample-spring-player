@@ -1,10 +1,14 @@
 package br.spring.exemplo.controller;
 
 import java.util.List;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +24,7 @@ import br.spring.exemplo.repository.JogadorRepository;
 
 @RestController
 @RequestMapping("/jogador")
+@CrossOrigin
 public class JogadorController {
 
 	@Autowired
@@ -42,7 +47,7 @@ public class JogadorController {
 	
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public ResponseEntity<Jogador> adicionarJogador(@RequestBody Jogador jogador){
+	public ResponseEntity<Jogador> adicionarJogador(@RequestBody @Valid Jogador jogador){
 		Jogador jogadorObjeto = jogadorRepository.save(jogador);
 		return new ResponseEntity<Jogador>(jogadorObjeto, HttpStatus.CREATED);
 	}
@@ -60,7 +65,7 @@ public class JogadorController {
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public ResponseEntity<Jogador> deletarJogador(@PathVariable Long id){
 		Jogador jogadorExistente = jogadorRepository.findById(id)
-				.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id não encontrado"));
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NO_CONTENT, "Id não encontrado"));
 		jogadorRepository.delete(jogadorExistente);
 		return new ResponseEntity<Jogador>(jogadorExistente, HttpStatus.valueOf(204));
 	}
